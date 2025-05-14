@@ -9,56 +9,56 @@ class ConteudoInput(BaseModel):
 @app.post("/diagnostico")
 def diagnostico(req: ConteudoInput):
     return {
-        "resultado": f"Diagnóstico baseado em: {req.conteudo_gerado}"
+        "resultado": f"Diagnóstico gerado com base neste conteúdo: {req.conteudo_gerado}"
     }
 
 @app.post("/reflexion")
 def reflexion(req: ConteudoInput):
     return {
-        "resposta": f"Reflexão sobre o conteúdo: {req.conteudo_gerado}"
+        "resposta": f"Aqui está uma reflexão sobre o conteúdo recebido: {req.conteudo_gerado}"
     }
 
 @app.post("/quiz")
 def quiz(req: ConteudoInput):
     return {
-        "pergunta": "Qual é a função da acentuação gráfica?",
-        "alternativas": ["A) Embelezar o texto", "B) Indicar entonação", "C) Marcar sílaba tônica", "D) Nada"],
-        "correta": "C"
+        "pergunta": f"Com base no tema enviado, aqui vai uma pergunta: Qual é o ponto principal de '{req.conteudo_gerado}'?",
+        "alternativas": ["A) Exemplo 1", "B) Exemplo 2", "C) Exemplo 3", "D) Exemplo 4"],
+        "correta": "A"
     }
 
 @app.post("/avaliacao")
 def avaliacao(req: ConteudoInput):
     return {
-        "nota": 9.0,
-        "comentario": "Conteúdo muito bem estruturado!"
+        "nota": 8.5,
+        "comentario": f"Avaliação automática do conteúdo recebido: {req.conteudo_gerado}"
     }
 
 @app.post("/summary")
 def summary(req: ConteudoInput):
     return {
-        "resumo": f"Resumo: {req.conteudo_gerado[:100]}..."
+        "resumo": f"Resumo automático do conteúdo: {req.conteudo_gerado[:100]}..."
     }
 
 @app.post("/feedback")
 def feedback(req: ConteudoInput):
     return {
-        "feedback": "Você está evoluindo bem! Continue assim."
+        "feedback": f"Feedback gerado com base no conteúdo: {req.conteudo_gerado}"
     }
 
 @app.post("/memoria")
 def memoria(req: ConteudoInput):
     return {
-        "registro": f"Conteúdo salvo: {req.conteudo_gerado}"
+        "registro": f"O seguinte conteúdo foi processado e armazenado: {req.conteudo_gerado}"
     }
 
 @app.post("/observer")
 def observer(req: ConteudoInput):
     return {
-        "observacao": f"Analisando: {req.conteudo_gerado}"
+        "observacao": f"A observação foi feita sobre o seguinte conteúdo: {req.conteudo_gerado}"
     }
 
 @app.post("/metaphors")
 def metaphors(req: ConteudoInput):
     return {
-        "metafora": f"Isso é como plantar sementes no jardim do conhecimento: {req.conteudo_gerado}"
+        "metafora": f"Isto pode ser comparado a um rio fluindo: {req.conteudo_gerado}"
     }
