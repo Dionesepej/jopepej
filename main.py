@@ -4,7 +4,7 @@ from typing import List, Optional, Dict
 from datetime import datetime
 import yaml
 from acao_registrarHistoricoOmega import registrar_historico
-
+from acao_observerOmega import observer
 
 app = FastAPI()
 
