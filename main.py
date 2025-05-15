@@ -1,64 +1,77 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import List, Optional, Dict
+from datetime import datetime
+import yaml
 
 app = FastAPI()
 
-class ConteudoInput(BaseModel):
-    conteudo_gerado: str
+# ==== MODELOS ====
+class TextoSimples(BaseModel):
+    conteudo: str
 
-@app.post("/diagnostico")
-def diagnostico(req: ConteudoInput):
+class AgenteNovo(BaseModel):
+    nome: str
+    descricao: str
+    acoes_usadas: List[str]
+
+class PromptRequest(BaseModel):
+    dominio: str
+    estilo_resposta: str
+    proposito: str
+
+class BlueprintRequest(BaseModel):
+    objetivo_diagnosticado: str
+
+# ==== ROTAS GENÉRICAS SIMULADAS ====
+@app.post("/criarPromptMatriz")
+def criar_prompt(req: PromptRequest):
+    return {"prompt": f"Você é um agente criado para {req.dominio}, com estilo {req.estilo_resposta}, para {req.proposito}."}
+
+@app.post("/gerarBlueprintDoAgente")
+def gerar_blueprint(req: BlueprintRequest):
+    return {"blueprint": {"planner": "Analisa", "executor": "Executa", "reflexion_chain": True}}
+
+@app.post("/registrar-agente")
+def registrar_agente(req: AgenteNovo):
+    caminho_arquivo = "registro_de_agentes.yaml"
+    try:
+        with open(caminho_arquivo, "r", encoding="utf-8") as f:
+            registro = yaml.safe_load(f) or {}
+    except FileNotFoundError:
+        registro = {"agentes": []}
+
+    atualizado = False
+    for agente in registro["agentes"]:
+        if agente["nome"].lower() == req.nome.lower():
+            agente["descricao"] = req.descricao
+            agente["acoes_usadas"] = list(set(agente["acoes_usadas"] + req.acoes_usadas))
+            agente["data_atualizacao"] = datetime.now().strftime("%Y-%m-%d")
+            atualizado = True
+            break
+
+    if not atualizado:
+        registro["agentes"].append({
+            "nome": req.nome,
+            "descricao": req.descricao,
+            "acoes_usadas": req.acoes_usadas,
+            "data_criacao": datetime.now().strftime("%Y-%m-%d"),
+            "observacoes": ""
+        })
+
+    with open(caminho_arquivo, "w", encoding="utf-8") as f:
+        yaml.dump(registro, f, allow_unicode=True)
+
     return {
-        "resultado": f"Diagnóstico gerado com base neste conteúdo: {req.conteudo_gerado}"
+        "status": "Agente registrado com sucesso.",
+        "total_agentes": len(registro["agentes"])
     }
 
-@app.post("/reflexion")
-def reflexion(req: ConteudoInput):
+# ==== ROTAS MOCKADAS ====
+@app.post("/{rota_personalizada}")
+def rota_generica(rota_personalizada: str, body: Optional[Dict] = None):
     return {
-        "resposta": f"Aqui está uma reflexão sobre o conteúdo recebido: {req.conteudo_gerado}"
-    }
-
-@app.post("/quiz")
-def quiz(req: ConteudoInput):
-    return {
-        "pergunta": f"Com base no tema enviado, aqui vai uma pergunta: Qual é o ponto principal de '{req.conteudo_gerado}'?",
-        "alternativas": ["A) Exemplo 1", "B) Exemplo 2", "C) Exemplo 3", "D) Exemplo 4"],
-        "correta": "A"
-    }
-
-@app.post("/avaliacao")
-def avaliacao(req: ConteudoInput):
-    return {
-        "nota": 8.5,
-        "comentario": f"Avaliação automática do conteúdo recebido: {req.conteudo_gerado}"
-    }
-
-@app.post("/summary")
-def summary(req: ConteudoInput):
-    return {
-        "resumo": f"Resumo automático do conteúdo: {req.conteudo_gerado[:100]}..."
-    }
-
-@app.post("/feedback")
-def feedback(req: ConteudoInput):
-    return {
-        "feedback": f"Feedback gerado com base no conteúdo: {req.conteudo_gerado}"
-    }
-
-@app.post("/memoria")
-def memoria(req: ConteudoInput):
-    return {
-        "registro": f"O seguinte conteúdo foi processado e armazenado: {req.conteudo_gerado}"
-    }
-
-@app.post("/observer")
-def observer(req: ConteudoInput):
-    return {
-        "observacao": f"A observação foi feita sobre o seguinte conteúdo: {req.conteudo_gerado}"
-    }
-
-@app.post("/metaphors")
-def metaphors(req: ConteudoInput):
-    return {
-        "metafora": f"Isto pode ser comparado a um rio fluindo: {req.conteudo_gerado}"
+        "mensagem": f"Ação '{rota_personalizada}' recebida com sucesso.",
+        "entrada": body or {},
+        "status": "simulado"
     }
