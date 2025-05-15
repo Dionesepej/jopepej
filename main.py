@@ -4,7 +4,7 @@ from typing import List, Optional, Dict
 from datetime import datetime
 import yaml
 from acao_registrarHistoricoOmega import registrar_historico
-
+from acao_observerOmega import observer
 
 app = FastAPI()
 
@@ -25,7 +25,27 @@ class PromptRequest(BaseModel):
 class BlueprintRequest(BaseModel):
     objetivo_diagnosticado: str
 
-# ==== ROTAS UNIVERSAIS ====
+# ==== ROTAS INTELIGENTES ====
+@app.post("/criarPromptMatriz")
+def criar_prompt(req: PromptRequest):
+    resposta = {
+        "prompt": f"Você é um agente criado para {req.dominio}, com estilo {req.estilo_resposta}, para {req.proposito}."
+    }
+    observer("Criador de Agente", "criarPromptMatriz", req.dict(), resposta)
+    return resposta
+
+@app.post("/gerarBlueprintDoAgente")
+def gerar_blueprint(req: BlueprintRequest):
+    resposta = {
+        "blueprint": {
+            "planner": "Analisa contexto e objetivos",
+            "executor": "Executa plano de ação",
+            "reflexion_chain": True
+        }
+    }
+    observer("Criador de Agente", "gerarBlueprintDoAgente", req.dict(), resposta)
+    return resposta
+
 @app.post("/registrar-agente")
 def registrar_agente(req: AgenteNovo):
     caminho_arquivo = "registro_de_agentes.yaml"
@@ -56,79 +76,18 @@ def registrar_agente(req: AgenteNovo):
     with open(caminho_arquivo, "w", encoding="utf-8") as f:
         yaml.dump(registro, f, allow_unicode=True)
 
+    observer("Criador de Agente", "registrar-agente", req.dict(), {"status": "ok"})
     return {
         "status": "Agente registrado com sucesso.",
         "total_agentes": len(registro["agentes"])
     }
 
-@app.post("/criarPromptMatriz")
-def criar_prompt(req: PromptRequest):
-    prompt_gerado = {
-        "prompt": f"Você é um agente criado para {req.dominio}, com estilo {req.estilo_resposta}, para {req.proposito}."
-    }
-    observer("Criador de agente", "criarPromptMatriz", req.dict(), prompt_gerado)
-    return prompt_gerado
-
-    }
-
-@app.post("/gerarBlueprintDoAgente")
-def gerar_blueprint(req: BlueprintRequest):
-    return {
-        "blueprint": {
-            "planner": "Analisa contexto e objetivos",
-            "executor": "Executa plano de ação",
-            "reflexion_chain": True
-        }
-    }
-
-# ==== ROTAS INTELIGENTES DO GPT-SIGMA ====
-@app.post("/segmentar_topicos")
-def segmentar_topicos(req: TextoSimples):
-    blocos = req.conteudo.split("\\n\\n")
-    return {"topicos": blocos}
-
-@app.post("/detectar_palavras_chave")
-def detectar_keywords(req: TextoSimples):
-    palavras = list(set(req.conteudo.lower().split()))
-    return {"palavras_chave": palavras[:6]}
-
-@app.post("/mapear_artigos_legais")
-def mapear_artigos(req: TextoSimples):
-    return {"artigos": ["Art. 5º CF", "Art. 37 CF"]}
-
-@app.post("/extrair_jurisprudencia")
-def extrair_juris(req: TextoSimples):
-    return {"jurisprudencias": ["STF: Tema 123", "STJ: Súmula 456"]}
-
-@app.post("/flashcard_builder")
-def flashcard_builder(req: TextoSimples):
-    return {"flashcards": [{"pergunta": "Defina um conceito chave", "resposta": "Simulado"}]}
-
-@app.post("/quiz_generator")
-def quiz_generator(req: TextoSimples):
-    return {"quiz": [{"questao": "O que é devido processo legal?", "gabarito": "Garantia constitucional"}]}
-
-@app.post("/summary_engine")
-def summary_engine(req: TextoSimples):
-    return {"resumo": req.conteudo[:120] + "..."}
-
-@app.post("/reflexion_chain")
-def reflexion_chain(req: TextoSimples):
-    return {"ajuste": "Corrigida ausência de jurisprudência no bloco 2"}
-
-@app.post("/self_diagnostic_module")
-def self_diag(req: TextoSimples):
-    return {"verificacao": "Bloco doutrinário ausente"}
-
-@app.post("/validacao_rigorosa")
-def validacao_rigorosa(req: TextoSimples):
-    return {"validado": True}
-
-# ==== ROTA UNIVERSAL ====
 @app.post("/{rota_personalizada}")
 def rota_generica(rota_personalizada: str, body: Optional[Dict] = None):
-    return {
+    resposta = {
         "mensagem": f"Ação '{rota_personalizada}' recebida com sucesso.",
         "entrada": body or {},
         "status": "simulado"
     }
+    observer("Genérica", rota_personalizada, body or {}, resposta)
+    return resposta
