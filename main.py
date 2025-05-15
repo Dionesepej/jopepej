@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from typing import List, Optional, Dict
 from datetime import datetime
 import yaml
+from acao_registrarHistoricoOmega import registrar_historico
+
 
 app = FastAPI()
 
