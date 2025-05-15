@@ -1,0 +1,95 @@
+agentes:
+- acoes_usadas:
+  - /criarPromptMatriz
+  - /gerarBlueprintDoAgente
+  - /reflexion
+  - /gerar-questao-concurso
+  data_criacao: '2025-05-15'
+  descricao: Ensina português para concursos com humor e didática
+  nome: Professor Português
+  observacoes: ''
+- acoes_usadas:
+  - /criarPromptMatriz
+  - /gerarBlueprintDoAgente
+  - /buscar-tendencias
+  data_criacao: '2025-05-15'
+  descricao: Dá ideias reais pra ganhar dinheiro de casa com urgência
+  nome: Gênio do Plano B
+  observacoes: ''
+- acoes_usadas:
+  - /acao-briefing
+  - /acao-extrair-ideia
+  - /acao-estrutura-copy
+  - /acao-plataforma
+  - /acao-projeto-fake
+  - /acao-validar-briefing
+  - /acao-reorganiza
+  - /responderprojetosfreela
+  - /extrair-informacoes-cliente
+  - /validar-proposta-para-envio
+  - /gerar-entrega-final
+  - /resumir-proposta
+  data_criacao: '2025-05-15'
+  descricao: ''
+  nome: ASSISTENTE JOPE
+  observacoes: ''
+- acoes_usadas:
+  - /sigma-painel-revisao
+  - /sigma-quadro-comparativo
+  - /sigma-flashcards
+  - /sigma-jurisprudencia
+  - /sigma-artigos-legais
+  - /sigma-palavras-chave
+  - /sigma-topicos-esquematizados
+  data_criacao: '2025-05-15'
+  descricao: ''
+  nome: Resumo turbo
+  observacoes: ''
+- acoes_usadas:
+  - /resetar-contexto-completo
+  - /gerar-feedback-completo
+  - /summary-mode
+  - /aplicar-protocolo-omega
+  - /quiz-builder
+  - /metaphor-generator
+  - /aplicar-reflexion-chain
+  - /simular-self-diagnostic
+  - /gerar-questao-reforco
+  data_criacao: '2025-05-15'
+  descricao: Mestre da Língua Portuguesa para concursos, ensina com humor, metáforas
+    e clareza.
+  nome: Prof.Portugues
+  observacoes: ''
+- acoes_usadas:
+  - /vetorizar-imagem
+  - '!acaoDuasVersoes'
+  - '!briefingilustra'
+  - '!carrosselsocial'
+  - '!composicaobanner'
+  - '!coreldraw + ação'
+  - '!coreldraw'
+  - '!exportarilustra'
+  - '!exportarlogo'
+  - '!exportarvetor'
+  - '!feed'
+  - '!illustrator + ação'
+  - '!illustrator tutor'
+  - '!ilustrarpersona'
+  - '!iniciarlogo'
+  - '!inkscape + ação'
+  - '!inkscape'
+  - '!medidabanner'
+  - '!mockuplogo'
+  - '!novobanner'
+  - '!paleta'
+  - '!printbanner'
+  - '!reduzir'
+  - '!revisar'
+  - '!storypost'
+  - '!templatesocial'
+  - '!vetorizarlogo'
+  data_criacao: '2025-05-15'
+  descricao: Frases de quebra-gelo para ativação de ações personalizadas do OPERADOR
+    SOMBRA.
+  nome: operador sombra
+  observacoes: Contém ações com prefixo '!' personalizadas para uso criativo e visual
