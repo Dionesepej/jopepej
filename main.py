@@ -63,8 +63,12 @@ def registrar_agente(req: AgenteNovo):
 
 @app.post("/criarPromptMatriz")
 def criar_prompt(req: PromptRequest):
-    return {
+    prompt_gerado = {
         "prompt": f"Você é um agente criado para {req.dominio}, com estilo {req.estilo_resposta}, para {req.proposito}."
+    }
+    observer("Criador de agente", "criarPromptMatriz", req.dict(), prompt_gerado)
+    return prompt_gerado
+
     }
 
 @app.post("/gerarBlueprintDoAgente")
